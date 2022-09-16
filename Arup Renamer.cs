@@ -44,9 +44,11 @@ namespace Arup_Renamer
                 checkedListBox_files.SetItemCheckState(i, (state ? CheckState.Checked : CheckState.Unchecked));
         }
 
-        private void button_OpenFile_Click(object sender, EventArgs e)
+        private async void button_OpenFile_Click(object sender, EventArgs e)
         {
-            
+            dirPath = textBox_FolderPath.Text;
+            checkedListBox_files.Items.Clear();
+            await PopulateList();
         }
 
         private void buttonSelectAll_Click(object sender, EventArgs e)
@@ -57,6 +59,11 @@ namespace Arup_Renamer
         private void buttonDeselectAll_Click(object sender, EventArgs e)
         {
             Checker(false);
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
