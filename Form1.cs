@@ -46,7 +46,7 @@ namespace Arup_Renamer
         /// <returns>Functions to hand the opening and loading of a folder</returns>
         /// <code>
         /// 
-        public void RenameKey<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey fromKey, TKey toKey)
+        public static void RenameKey<TKey, TValue>(IDictionary<TKey, TValue> dic, TKey fromKey, TKey toKey)
         {
             TValue value = dic[fromKey];
             dic.Remove(fromKey);
@@ -55,6 +55,7 @@ namespace Arup_Renamer
 
 
         private void UpdateList() {
+            checkedListBox_files.Items.Clear();
             foreach (string file in FileDictionary.Keys) checkedListBox_files.Items.Add(file);
         }
 

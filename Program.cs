@@ -16,7 +16,7 @@ namespace Arup_Renamer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormRenamer());
+            Application.Run(new Form1());
         }
     }
 }
