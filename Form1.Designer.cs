@@ -190,7 +190,7 @@
             this.tabPageAffix.Controls.Add(this.buttonAppend);
             this.tabPageAffix.Location = new System.Drawing.Point(4, 22);
             this.tabPageAffix.Name = "tabPageAffix";
-            this.tabPageAffix.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageAffix.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageAffix.Size = new System.Drawing.Size(494, 60);
             this.tabPageAffix.TabIndex = 0;
             this.tabPageAffix.Text = "Affix";
@@ -215,7 +215,7 @@
             this.tabPageReplace.Controls.Add(this.textBoxFindWhat);
             this.tabPageReplace.Location = new System.Drawing.Point(4, 22);
             this.tabPageReplace.Name = "tabPageReplace";
-            this.tabPageReplace.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageReplace.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageReplace.Size = new System.Drawing.Size(494, 60);
             this.tabPageReplace.TabIndex = 1;
             this.tabPageReplace.Text = "Replace";
@@ -224,8 +224,9 @@
             // checkBoxIgnoreCase
             // 
             this.checkBoxIgnoreCase.AutoSize = true;
+            this.checkBoxIgnoreCase.Enabled = false;
             this.checkBoxIgnoreCase.Location = new System.Drawing.Point(413, 8);
-            this.checkBoxIgnoreCase.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxIgnoreCase.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxIgnoreCase.Name = "checkBoxIgnoreCase";
             this.checkBoxIgnoreCase.Size = new System.Drawing.Size(83, 17);
             this.checkBoxIgnoreCase.TabIndex = 5;
