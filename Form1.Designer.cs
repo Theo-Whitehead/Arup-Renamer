@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.checkedListBox_files = new System.Windows.Forms.CheckedListBox();
             this.textBox_FolderPath = new System.Windows.Forms.TextBox();
             this.button_OpenFile = new System.Windows.Forms.Button();
@@ -49,8 +50,12 @@
             this.labelFindWhat = new System.Windows.Forms.Label();
             this.textBoxReplaceWith = new System.Windows.Forms.TextBox();
             this.textBoxFindWhat = new System.Windows.Forms.TextBox();
-            this.buttonSearchDirectory = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.checkBoxExtensions = new System.Windows.Forms.CheckBox();
+            this.buttonRevert = new System.Windows.Forms.Button();
+            this.buttonSearchDirectory = new System.Windows.Forms.Button();
+            this.toolTips = new System.Windows.Forms.ToolTip(this.components);
+            this.progressBarApply = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.tabControlEditOptions.SuspendLayout();
             this.tabPageAffix.SuspendLayout();
@@ -85,7 +90,7 @@
             // 
             // button_OpenFile
             // 
-            this.button_OpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_OpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_OpenFile.Location = new System.Drawing.Point(451, 529);
             this.button_OpenFile.Name = "button_OpenFile";
             this.button_OpenFile.Size = new System.Drawing.Size(57, 23);
@@ -169,6 +174,7 @@
             this.buttonApply.TabIndex = 10;
             this.buttonApply.Text = "Apply";
             this.buttonApply.UseVisualStyleBackColor = true;
+            this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
             // tabControlEditOptions
             // 
@@ -280,8 +286,38 @@
             this.textBoxFindWhat.Size = new System.Drawing.Size(321, 20);
             this.textBoxFindWhat.TabIndex = 0;
             // 
+            // folderBrowserDialog
+            // 
+            this.folderBrowserDialog.ShowNewFolderButton = false;
+            // 
+            // checkBoxExtensions
+            // 
+            this.checkBoxExtensions.AutoSize = true;
+            this.checkBoxExtensions.Checked = true;
+            this.checkBoxExtensions.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxExtensions.Enabled = false;
+            this.checkBoxExtensions.Location = new System.Drawing.Point(167, 107);
+            this.checkBoxExtensions.Name = "checkBoxExtensions";
+            this.checkBoxExtensions.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxExtensions.TabIndex = 13;
+            this.checkBoxExtensions.Text = "Show Extensions";
+            this.checkBoxExtensions.UseVisualStyleBackColor = true;
+            this.checkBoxExtensions.CheckedChanged += new System.EventHandler(this.checkBoxExtensions_CheckedChanged);
+            // 
+            // buttonRevert
+            // 
+            this.buttonRevert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRevert.Image = global::Arup_Renamer.Properties.Resources.Refresh;
+            this.buttonRevert.Location = new System.Drawing.Point(472, 104);
+            this.buttonRevert.Name = "buttonRevert";
+            this.buttonRevert.Size = new System.Drawing.Size(36, 23);
+            this.buttonRevert.TabIndex = 14;
+            this.buttonRevert.UseVisualStyleBackColor = true;
+            this.buttonRevert.Click += new System.EventHandler(this.buttonRevert_Click);
+            // 
             // buttonSearchDirectory
             // 
+            this.buttonSearchDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSearchDirectory.Image = global::Arup_Renamer.Properties.Resources.FolderOpened;
             this.buttonSearchDirectory.Location = new System.Drawing.Point(414, 529);
             this.buttonSearchDirectory.Name = "buttonSearchDirectory";
@@ -290,15 +326,22 @@
             this.buttonSearchDirectory.UseVisualStyleBackColor = true;
             this.buttonSearchDirectory.Click += new System.EventHandler(this.buttonSearchDirectory_Click);
             // 
-            // folderBrowserDialog
+            // progressBarApply
             // 
-            this.folderBrowserDialog.ShowNewFolderButton = false;
+            this.progressBarApply.Location = new System.Drawing.Point(274, 104);
+            this.progressBarApply.Name = "progressBarApply";
+            this.progressBarApply.Size = new System.Drawing.Size(192, 23);
+            this.progressBarApply.TabIndex = 15;
+            this.progressBarApply.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(514, 591);
+            this.Controls.Add(this.progressBarApply);
+            this.Controls.Add(this.buttonRevert);
+            this.Controls.Add(this.checkBoxExtensions);
             this.Controls.Add(this.buttonSearchDirectory);
             this.Controls.Add(this.tabControlEditOptions);
             this.Controls.Add(this.buttonApply);
@@ -347,6 +390,10 @@
         private System.Windows.Forms.Button buttonSearchDirectory;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.CheckBox checkBoxIgnoreCase;
+        private System.Windows.Forms.CheckBox checkBoxExtensions;
+        private System.Windows.Forms.Button buttonRevert;
+        private System.Windows.Forms.ToolTip toolTips;
+        private System.Windows.Forms.ProgressBar progressBarApply;
     }
 }
 

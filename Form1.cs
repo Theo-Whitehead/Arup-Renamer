@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,10 +14,23 @@ namespace Arup_Renamer
 {
     public partial class Form1 : Form
     {
+        private const string VersionNumber = "Beta 1.0";
+        private const string ApplicationName = "Arup Renamer";
+        private string WindowName { 
+            get { return $"{ApplicationName} {VersionNumber} | {DirName}"; }
+        }
+
+        //Directory Path
         private string DirPath {
-            set { textBox_FolderPath.Text = value; } 
+            set { 
+                textBox_FolderPath.Text = value;
+                this.Text = WindowName;
+            } 
             get { return textBox_FolderPath.Text; }
         } 
+        private string DirName {
+            get { return DirPath.Substring(DirPath.LastIndexOf('\\') + 1); }
+        }
 
         private Dictionary<string, string> FileDictionary;
 
@@ -25,6 +39,8 @@ namespace Arup_Renamer
             InitializeComponent();
             DirPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             _ = PopulateList();
+            toolTips.SetToolTip(buttonRevert, "Revert Changes");
+            toolTips.SetToolTip(buttonApply , "Applies Name Changes to Files");
         }
         
         //Checking Boxes in the List
@@ -39,13 +55,8 @@ namespace Arup_Renamer
         private void buttonDeselectAll_Click(object sender, EventArgs e) { 
             Checker(false); 
         }
-
-        /// <summary>
-        /// Load Functions
-        /// </summary>
-        /// <returns>Functions to hand the opening and loading of a folder</returns>
-        /// <code>
-        /// 
+        
+        //Used for Renaming Keys in the Dicontnary
         public static void RenameKey<TKey, TValue>(IDictionary<TKey, TValue> dic, TKey fromKey, TKey toKey)
         {
             TValue value = dic[fromKey];
@@ -53,7 +64,7 @@ namespace Arup_Renamer
             dic[toKey] = value;
         }
 
-
+        //Just Refreshes the Checkbox List and doesn't touch the dictonary.
         private void UpdateList() {
             checkedListBox_files.Items.Clear();
             foreach (string file in FileDictionary.Keys) checkedListBox_files.Items.Add(file);
@@ -67,9 +78,14 @@ namespace Arup_Renamer
             {
                 //string[] files = Directory.GetFiles(dirPath, "*", SearchOption.AllDirectories);
                 List<string> files = new List<string>(Directory.GetFiles(DirPath, "*", SearchOption.TopDirectoryOnly));
-                FileDictionary = files.ToDictionary(k => Path.GetFileName(k), v => v);
+                if (checkBoxExtensions.Checked) {
+                    FileDictionary = files.ToDictionary(k => Path.GetFileName(k), v => v);
+                }
+                else {
+                    FileDictionary = files.ToDictionary(k => Path.GetFileNameWithoutExtension(k), v => v);
+                }
+                //FileDictionary = files.ToDictionary(k => Path.GetFileName(k), v => v);
                 UpdateList();
-                //foreach (string file in FileDictionary.Keys) checkedListBox_files.Items.Add(file);
                 return true;
             }
             catch (Exception e)
@@ -114,14 +130,77 @@ namespace Arup_Renamer
             UpdateList();
         }
 
+        private string[] splitExtension(string fileName) {
+            int index = fileName.LastIndexOf('.');
+            string[] arr = { 
+                fileName.Substring(0, index), 
+                fileName.Substring(index) 
+            };
+            return arr;
+        }
+
+
         private void buttonPrepend_Click(object sender, EventArgs e)
         {
-
+            foreach (Object item in checkedListBox_files.CheckedItems)
+            {
+                string newString = textBoxAffixWhat.Text + item.ToString();
+                RenameKey(FileDictionary, item.ToString(), newString);
+            }
+            UpdateList();
         }
 
         private void buttonAppend_Click(object sender, EventArgs e)
         {
+            foreach (Object item in checkedListBox_files.CheckedItems)
+            {
+                string newString;
+                if (checkBoxExtensions.Checked) {
+                    newString = item.ToString().Insert(item.ToString().LastIndexOf('.'), textBoxAffixWhat.Text);
+                }
+                else {
+                    newString = item.ToString() + textBoxAffixWhat.Text;
+                }
+                RenameKey(FileDictionary, item.ToString(), newString);
+            }
+            UpdateList();
+        }
 
+        //Apply Changes
+        private void buttonApply_Click(object sender, EventArgs e)
+        {
+            this.Enabled = false;
+            progressBarApply.Value = 0;
+            progressBarApply.Visible = true;
+            progressBarApply.Maximum = FileDictionary.Count();
+            int i = 0; //Number of Changes Made
+            foreach (KeyValuePair<string, string> entry in FileDictionary) {
+                if (entry.Key != Path.GetFileName(entry.Value)) {
+                    FileInfo fi = new FileInfo(entry.Value);
+                    if (fi.Exists) {
+                        string newName = $"{Path.GetDirectoryName(entry.Value)}\\{entry.Key}";
+                        fi.MoveTo(newName);
+                        i++;
+                    }
+                }
+                progressBarApply.PerformStep();
+            }
+            progressBarApply.Visible = false;
+            this.Enabled = true;
+            string message = $"Successfully updated {i} file names.";
+            SystemSounds.Exclamation.Play();
+            MessageBox.Show(message, "Complete",
+                    MessageBoxButtons.OK);
+        }
+
+        private void checkBoxExtensions_CheckedChanged(object sender, EventArgs e)
+        {
+            PopulateList();
+        }
+
+        private void buttonRevert_Click(object sender, EventArgs e)
+        {
+            PopulateList();
         }
     }
 }
